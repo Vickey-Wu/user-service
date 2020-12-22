@@ -1,0 +1,135 @@
+<link href="../../static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        <h3 style="text-align: center;"><strong>待我审批的申请单</strong></h3>
+        <hr/>
+        <div class="table-responsive">
+            <table id="mytable" class="table table-bordred table-striped">
+                <thead>
+                {% for h in thead %}
+                    <th>{{ h }}</th>
+                {% endfor %}
+                </thead>
+                <tbody>
+                    {% if bill_type == 'register' %}
+                        {% for r in result %}
+                            {% if r.bill_type == "注册申请" %}
+                            <form class="form-horizontal" method="post" action="/approval/?bill_type=register&bill_id={{ r.id }}">{% csrf_token %}
+                            <tr>
+                                <td id="bill_id" name="bill_id">{{ r.id }}</td>
+                                <td>{{ r.bill_type }}</td>
+                                <td>{{ r.sn }}</td>
+                                <td>{{ r.cn }}</td>
+                                <td>{{ r.mail }}</td>
+                                <td>{{ r.tel }}</td>
+                                <td>{{ r.group }}</td>
+                                <td>{{ r.submit_by }}</td>
+                                <td>
+                                    <select name="approval_status" class="form-control">
+                                        <option>未通过</option>
+                                        <option>通过</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="{{ r.id }}" class="btn btn-primary" type="submit" value="提交"/>
+                                </td>
+                            </tr>
+                            </form> 
+                            {% endif %}
+                            {% if r.bill_type == "删除申请" %}
+                            <form class="form-horizontal" method="post" action="/approval/?bill_type=delete&bill_id={{ r.id }}">{% csrf_token %}
+                            <tr>
+                                <td id="bill_id" name="bill_id">{{ r.id }}</td>
+                                <td>{{ r.bill_type }}</td>
+                                <td>{{ r.sn }}</td>
+                                <td>{{ r.cn }}</td>
+                                <td>{{ r.mail }}</td>
+                                <td>{{ r.tel }}</td>
+                                <td>{{ r.group }}</td>
+                                <td>{{ r.submit_by }}</td>
+                                <td>
+                                    <select name="approval_status" class="form-control">
+                                        <option>未通过</option>
+                                        <option>通过</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="{{ r.id }}" class="btn btn-primary" type="submit" value="提交"/>
+                                </td>
+                            </tr>
+                            </form> 
+                            {% endif %}
+                        {% endfor %}
+                        {% elif bill_type == 'email' %}
+                            {% for r in result %}
+                                {% if r.approval_by == request.user.last_name %}
+                            <form class="form-horizontal" method="post" action="/approval/?bill_type=email&bill_id={{ r.id }}">{% csrf_token %}
+                            <tr>
+                                <td id="bill_id" name="bill_id">{{ r.id }}</td>
+                                <td>{{ r.bill_type }}</td>
+                                <td>{{ r.cn }}</td>
+                                <td>{{ r.tel }}</td>
+                                <td>{{ r.group }}</td>
+                                <td>{{ r.leader }}</td>
+                                <td>{{ r.enterprise_mail }}</td>
+                                <td>{{ r.mail }}</td>
+                                <td>{{ r.submit_by }}</td>
+                                <td>
+                                    <select name="approval_status" class="form-control">
+                                        <option>未通过</option>
+                                        <option>通过</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="{{ r.id }}" class="btn btn-primary" type="submit" value="提交"/>
+                                </td>
+                            </tr>
+                            </form> 
+                                {% endif %}
+                            {% endfor %}
+                        {% elif bill_type == 'permission' %}
+                            {% for r in result %}
+                            <form class="form-horizontal" method="post" action="/approval/?bill_type=permission&bill_id={{ r.id }}">{% csrf_token %}
+                            <tr>
+                                <td id="bill_id" name="bill_id">{{ r.id }}</td>
+                                <td>{{ r.bill_type }}</td>
+                                <td>{{ r.permission_type }}</td>
+                                <td>{{ r.group }}</td>
+                                <td>{{ r.mail }}</td>
+                                <td>{{ r.submit_by }}</td>
+                                <td>
+                                    <select name="approval_status" class="form-control">
+                                        <option>未通过</option>
+                                        <option>通过</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input id="{{ r.id }}" class="btn btn-primary" type="submit" value="提交"/>
+                                </td>
+                            </tr>
+                            </form> 
+                        {% endfor %}
+                    {% endif %}
+                <tbody>
+            </table>
+        </div>
+        <hr/>
+        <div style="color: blue; text-align: center; font-size: 18px;">
+            <a target="_blank" class="btn btn-primary btn-lg" href="/approval/?bill_type=register">审批注册申请单</a>
+            <a target="_blank" class="btn btn-primary btn-lg" href="/approval/?bill_type=email">审批邮箱申请单</a>
+            <a target="_blank" class="btn btn-primary btn-lg" href="/approval/?bill_type=permission">审批权限申请单</a>
+        </div>
+        <hr/>
+        <div style="color: blue; text-align: center; font-size: 18px;">
+            <a name="register_bill" class="btn btn-primary btn-lg" href="{% url 'registration' %}">去注册账号</a>
+            <a name="delete_bill" class="btn btn-primary btn-lg" href="{% url 'delete_user' %}">去删除账号</a>
+            <a name="email_apply" class="btn btn-primary btn-lg" href="{% url 'email_apply' %}">去申请邮箱</a>
+            <a name="permission_apply" class="btn btn-primary btn-lg" href="{% url 'delete_user' %}">去申请权限</a>
+            <a name="my_bill" class="btn btn-primary btn-lg" href="{% url 'result' %}">查看我的申请</a>
+        </div>
+    </div>
+</div>

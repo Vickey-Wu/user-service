@@ -1,0 +1,100 @@
+<link href="../../static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="../../static/css/bootstrap.css">
+
+		<!-- Website CSS style -->
+		<link rel="stylesheet" type="text/css" href="../../static/css/main.css">
+
+		<!-- Website Font style -->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<title>quit page</title>
+	</head>
+	<body>
+		<div class="container">
+                        <div class="row main" style="margin-top: auto;">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">删除账号申请</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
+                                <div class="main-login main-center" style="max-width: 666px;">
+			        <div style="color: blue; text-align: center; font-size: 18px;">欢迎: {{ request.user.last_name }}</div>
+                                        {% if messages %}
+                                            <script visibility: hidden>
+                                                {% for msg in messages %}
+                                                    alert('{{ msg.message }}');
+                                                {% endfor %}
+                                            </script>
+                                        {% endif %}
+                                        <!--<span style="color: red">{{ error_msg_delete_user }}</span>-->
+					<form class="form-horizontal" method="post" action="{% url 'delete_user' %}">{% csrf_token %}
+						
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">姓名全拼</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input autofocus type="text" class="form-control" name="sn" id="sn"  placeholder="输入姓名全拼"/>
+								</div>
+							</div>
+						</div>
+
+                                                <div class="form-group">
+                                                        <label for="phone" class="cols-sm-2 control-label">手机号码</label>
+                                                        <div class="cols-sm-10">
+                                                                <div class="input-group">
+                                                                        <span class="input-group-addon"><i class="fa fa-phone fa" aria-hidden="true"></i></span>
+                                                                        <input type="text" class="form-control" name="tel" id="tel"  placeholder="输入个人手机号码"/>
+                                                                </div>
+                                                        </div>
+                                                </div>
+
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">审批人员</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									    <select name="approval_by" class="form-control">
+                                                                            {% for r in approval_person %}
+                                                                                <option>{{ r }}</option>
+                                                                            {% endfor %}
+                                                                            </select>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<input type="submit" name="submit_quit" class="btn btn-primary btn-lg btn-block login-button" value="提交删除账号申请"/>
+						</div>
+
+                                                <div class="form-group">
+                                                        <a name="registration" class="btn btn-primary btn-lg btn-block login-button" href="{% url 'registration' %}">去申请账号</a>
+                                                </div>
+
+                                                <div class="form-group">
+                                                        <a name="email_apply" class="btn btn-primary btn-lg btn-block login-button" href="{% url 'email_apply' %}">去申请邮箱</a>
+                                                </div>
+
+                                                <div class="form-group">
+                                                        <a name="permission_apply" class="btn btn-primary btn-lg btn-block login-button" href="{% url 'permission_apply' %}">去申请权限</a>
+                                                </div>
+
+						<div class="form-group">
+                                                    <a name="my_bill" class="btn btn-primary btn-lg btn-block login-button" href="{% url 'result' %}">查看我的申请单</a>
+				                </div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="../../static/js/bootstrap.js"></script>
+	</body>
+</html>
